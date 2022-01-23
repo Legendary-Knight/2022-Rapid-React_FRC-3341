@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
-
+import edu.wpi.first.wpilibj.Joystick;
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
  * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
@@ -21,7 +21,10 @@ public class RobotContainer {
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
 
   private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
-
+  
+  private static Joystick leftJoy = new Joystick(Constants.leftJoy);
+  private static Joystick rightJoy = new Joystick(Constants.rightJoy);
+  private static Limelight LI = new Limelight();
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the button bindings
@@ -41,6 +44,18 @@ public class RobotContainer {
    *
    * @return the command to run in autonomous
    */
+
+  public static Limelight getLI(){
+    return LI;
+  }
+  public static Joystick returnLeftJoy() {
+    return leftJoy;
+  }
+
+  public static Joystick returnRightJoy() {
+    return rightJoy;
+  }
+
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
     return m_autoCommand;
