@@ -37,7 +37,7 @@ public class Drivetrain extends SubsystemBase {
     rightTalon.setInverted(true);
     rightTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
     resetEncoders();
-
+    
 
     //resetting the gyro
     navx.reset();
@@ -78,6 +78,6 @@ public class Drivetrain extends SubsystemBase {
     // This method will be called once per scheduler run
     tankDrive(RobotContainer.returnLeftJoy().getY()*0.5, RobotContainer.returnRightJoy().getY()*0.5);
     System.out.println(getAngle());
-    }
+    
   }
 }

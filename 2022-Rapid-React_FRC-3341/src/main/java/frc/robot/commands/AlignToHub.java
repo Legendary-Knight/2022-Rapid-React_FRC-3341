@@ -11,10 +11,10 @@ import frc.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 /** An example command that uses an example subsystem. */
-public class AlignToCargo extends CommandBase {
+public class AlignToHub extends CommandBase {
   //@SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private Drivetrain driveTrain;
-    private double x, speed, error, kp, offset=0;
+    private double x, y, turnS, fowardS, speed, speedR, speedL, errorX, errorD, KX, kD=1, offset=0, distance,targetD, H2=104; //H2  os  Height of the Hub 8 feet 8 inches (104 inches)
     private Limelight LI;
     //private int direction;
   /**
@@ -22,7 +22,7 @@ public class AlignToCargo extends CommandBase {
    *
    * @param subsystem The subsystem used by this command.
    */
-  public AlignToCargo(Drivetrain dt) {
+  public AlignToHub(Drivetrain dt) {
     driveTrain=dt;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(driveTrain);
@@ -34,24 +34,69 @@ public class AlignToCargo extends CommandBase {
     LI= RobotContainer.getLI();
     LI.changePipeline(Limelight.pipelines.Cargo);
     x=LI.getX();
-    error=x-offset;
+    y=LI.getY();
+    distance=LI.getDistance(H2);
+    errorX=x-offset;
     
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    x=LI.getX();
-    error=x-offset;
-    speed = error*kp;
-
-    if(Math.abs(speed) > .9){
-      speed=.9 *  (Math.abs(speed)/speed);
+  
+    distance=LI.getDistance(H2);
+    errorD = targetD-distance;
+    fowardS= errorD*kD;
+    
+    if(Math.abs(fowardS) > .75){
+      fowardS=.9 *  (Math.abs(fowardS)/fowardS);
     }
     else if(Math.abs(speed)< .1){
-      speed=.1 * (Math.abs(speed)/speed);
+      fowardS =.1 * (Math.abs(fowardS)/fowardS);
     }
+
+
+    x=LI.getX();
+    errorX=x-offset;
+    turnS = errorX*KX;
+
+    if(Math.abs(turnS) > .25){
+      speed=.5 *  (Math.abs(turnS)/turnS);
+    }
+    else if(Math.abs(speed)< .1){
+      speed=.1 * (Math.abs(turnS)/turnS);
+    }
+
+    speedL = fowardS+turnS;
+    speedR = fowardS-turnS;
+
+    if(Math.abs(speedL) > 1){
+      speed=.9 *  (Math.abs(speedL)/speedL);
+    }
+    else if(Math.abs(speedL)< .1){
+      speed=.1 * (Math.abs(speedL)/speedL);
+    }
+    if(Math.abs(speedR) > .9){
+      speed=.9 *  (Math.abs(speedR)/speedR);
+    }
+    else if(Math.abs(speedR)< .1){
+      speed=.1 * (Math.abs(speedR)/speedR);
+    }
+
+    driveTrain.tankDrive(speedL, speedR);
+
+    /*
+    x=LI.getX();
+    errorX=x-offset;
+    speed = errorX*kp;
+
+    
+
+
     driveTrain.tankDrive(speed, -speed);
+    */
+
+
   }
 
   // Called once the command ends or is interrupted.
@@ -62,9 +107,13 @@ public class AlignToCargo extends CommandBase {
   @Override
   public boolean isFinished() {
     x=LI.getX();
-    error=x-offset;
-    double acceptance =1;
-    if(Math.abs(error)<=acceptance){
+    errorX=x-offset;
+
+    distance=LI.getDistance(H2);
+    errorD = targetD-distance;
+    double acceptanceX =1;
+    double acceptanceD =1;
+    if(Math.abs(errorX)<=acceptanceX && Math.abs(errorD)<=acceptanceD){
       return true;
     }
     return false;

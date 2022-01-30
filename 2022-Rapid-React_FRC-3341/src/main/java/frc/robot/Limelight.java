@@ -7,6 +7,7 @@ package frc.robot;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /** Add your docs here. */
@@ -16,7 +17,7 @@ public class Limelight {
 	private int pipeline = 0;
 	private int v;
 	private double x, y, area;
-	private int lineC=0, lineH=1;
+	private int lineC=0, lineH=2;
 	//private static double targetArea;
 	//private static double ballheight = 3.5; //inches
     //private static double cameraheight = 10.5; //inches
@@ -25,11 +26,19 @@ public class Limelight {
 	public enum pipelines{Cargo,Hub};
     
     public Limelight() {
-    table = NetworkTableInstance.getDefault().getTable("limelight");
-	tv = table.getEntry("tv");
-	tx = table.getEntry("tx");
-	ty = table.getEntry("ty");
-	ta = table.getEntry("ta");
+		table = NetworkTableInstance.getDefault().getTable("limelight");
+		tv = table.getEntry("tv");
+		tx = table.getEntry("tx");
+		ty = table.getEntry("ty");
+		ta = table.getEntry("ta");
+
+		if(DriverStation.getAlliance() == DriverStation.Alliance.Blue){
+			lineC=0;
+		}
+		else{
+			lineC=1;
+		}
+
     }
     
     public void update() {
