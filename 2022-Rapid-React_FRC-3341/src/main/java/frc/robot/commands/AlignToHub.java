@@ -4,6 +4,7 @@
 
 package frc.robot.commands;
 
+import frc.robot.commands.AlignToCargo;
 import frc.robot.Limelight;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.Drivetrain;
@@ -32,7 +33,7 @@ public class AlignToHub extends CommandBase {
   @Override
   public void initialize() {
     LI= RobotContainer.getLI();
-    LI.changePipeline(Limelight.pipelines.Cargo);
+    LI.changePipeline(Limelight.pipelines.Hub);
     x=LI.getX();
     y=LI.getY();
     distance=LI.getDistance(H2);
@@ -43,7 +44,7 @@ public class AlignToHub extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-  
+    
     distance=LI.getDistance(H2);
     errorD = targetD-distance;
     fowardS= errorD*kD;
