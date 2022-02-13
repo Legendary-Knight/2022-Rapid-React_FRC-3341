@@ -9,6 +9,10 @@ import edu.wpi.first.wpilibj.XboxController;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj.Joystick;
+
+import frc.robot.commands.AlignToCargo;
+
+
 import frc.robot.subsystems.Drivetrain;
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -26,6 +30,8 @@ public class RobotContainer {
   private static Joystick rightJoy = new Joystick(Constants.rightJoy);
   private static Limelight LI = new Limelight();
   private static Drivetrain dt = new Drivetrain();
+
+  private static AlignToCargo ATC = new AlignToCargo(dt);
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the button bindings
@@ -61,6 +67,6 @@ public class RobotContainer {
   }
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return null;
+    return ATC;
   }
 }

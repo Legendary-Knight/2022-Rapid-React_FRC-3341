@@ -79,9 +79,9 @@ public class CargoDriveFoward extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    errorX=x-offset;
+    error = distance-driveTrain.getEncoderDistance();
     double acceptance =1;
-    if(Math.abs(error)<=acceptance || LI.){
+    if(Math.abs(error)<=acceptance){
       return true;
     }
     return false;

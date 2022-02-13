@@ -24,9 +24,18 @@ public class Limelight {
 	private double ang1=0, ang2=0,h1=0,h2=0;
     private double distance;
 	public enum pipelines{Cargo,Hub};
+
+	private int test=0;
     
     public Limelight() {
 		table = NetworkTableInstance.getDefault().getTable("limelight");
+		if(table!=null){
+			test=0;
+		}
+		else{
+			test=1;
+		}
+		SmartDashboard.putNumber("table True",test);
 		tv = table.getEntry("tv");
 		tx = table.getEntry("tx");
 		ty = table.getEntry("ty");

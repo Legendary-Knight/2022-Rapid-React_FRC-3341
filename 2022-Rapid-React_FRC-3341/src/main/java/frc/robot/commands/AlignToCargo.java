@@ -13,7 +13,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 public class AlignToCargo extends CommandBase {
   //@SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private Drivetrain driveTrain;
-    private double x, speed, error, kp, offset=0;
+    private double x, speed, error, kp=.05, offset=0;
     private Limelight LI;
     //private int direction;
   /**
@@ -50,7 +50,8 @@ public class AlignToCargo extends CommandBase {
     else if(Math.abs(speed)< .1){
       speed=.1 * (Math.abs(speed)/speed);
     }
-    driveTrain.tankDrive(speed, -speed);
+    // driveTrain.tankDrive(speed, -speed);
+    driveTrain.tankDrive(Math.abs(speed)/speed *.5, -Math.abs(speed)/speed *.5);
   }
 
   // Called once the command ends or is interrupted.
